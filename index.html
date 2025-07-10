@@ -10,19 +10,23 @@
 </head>
 
 <body>
-    <h3>Maple Inspector</h3>
-
-    <div class="container-xs text-center">
-        <div v-scope="Row(0)"></div>
-        <div v-scope="Row(1)"></div>
-        <div v-scope="Row(2)"></div>
-        <div v-scope="Row(3)"></div>
-        <div v-scope="Row(4)"></div>
-        <div v-scope="Row(5)"></div>
+    <div class="m-4">
+        <h3>Maple Inspector</h3>
+        <div v-scope="Character()"></div>
+        <div class="container-xs text-center">
+            <div v-scope="Row(0)"></div>
+            <div v-scope="Row(1)"></div>
+            <div v-scope="Row(2)"></div>
+            <div v-scope="Row(3)"></div>
+            <div v-scope="Row(4)"></div>
+            <div v-scope="Row(5)"></div>
+        </div>
     </div>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
 
     <script type="module">
         import { createApp } from 'https://unpkg.com/petite-vue?module';
@@ -68,7 +72,23 @@
             }
         }
 
-        createApp({ Row, Col, Item, popup: false }).mount();
+        function Character() {
+            return {
+                $template: "#character-template",
+                selectedClass: "",
+                classOptions: [
+                    "Battle Mage",
+                    "Blaster",
+                    "Bucc",
+                ],
+                select(selection) {
+                    console.log(selection)
+                    this.selectedClass = selection;
+                }
+            }
+        }
+
+        createApp({ Row, Col, Item, Character, popup: false }).mount();
     </script>
 
     <template id="row-template">
@@ -82,13 +102,24 @@
     </template>
 
     <template id="col-template">
-        <div v-if="name == 'weapon'" v-scope="Item({ url: 'https://media.maplestorywiki.net/yetidb/Eqp_Genesis_Staff.png' })"></div>
+        <div v-if="name == 'weapon'"
+            v-scope="Item({ url: 'https://media.maplestorywiki.net/yetidb/Eqp_Genesis_Staff.png' })"></div>
         <div v-if="name != '' && name != 'weapon'" v-scope="Item({ name: name })"></div>
     </template>
 
     <template id="item-template">
-        <img :src="url" class="img-thumbnail" alt="item" v-on:click="toggle"/>
+        <img :src="url" class="img-thumbnail" alt="item" v-on:click="toggle" />
         <p v-if="edit">edit</p>
+    </template>
+
+    <template id="character-template">
+        <div class="input-group mb-3 text-start" style="max-width: 300px;">
+            <label class="input-group-text" for="classSelect">Class</label>
+            <select class="form-select" id="classSelect" @change="select($event.target.value)">
+                <option selected>Select Class...</option>
+                <option v-for="option in classOptions" :value="option">{{ option }}</option>
+            </select>
+        </div>
     </template>
 </body>
 
