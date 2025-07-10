@@ -21,9 +21,8 @@
         <div v-scope="Row(5)"></div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
-        integrity="sha384-7qAoOXltbVP82dhxHAUje59V5r2YsVfBafyUDxEdApLPmcdhBPg1DKg1ERo0BZlK"
-        crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 
     <script type="module">
         import { createApp } from 'https://unpkg.com/petite-vue?module';
@@ -50,14 +49,26 @@
             }
         }
 
-        function Item(name) {
+        function Item(props) {
+            let url;
+            if (props.url) {
+                url = props.url;
+            } else if (props.name) {
+                url = `https://placehold.co/37?text=${props.name}`;
+            } else {
+                url = "https://placehold.co/37";
+            }
             return {
                 $template: "#item-template",
-                url: `https://placehold.co/37?text=${name}`,
+                url: url,
+                edit: false,
+                toggle() {
+                    this.edit = !this.edit;
+                },
             }
         }
 
-        createApp({ Row, Col, Item }).mount();
+        createApp({ Row, Col, Item, popup: false }).mount();
     </script>
 
     <template id="row-template">
@@ -71,12 +82,13 @@
     </template>
 
     <template id="col-template">
-        <div v-if="name != ''" v-scope="Item(name)"></div>
+        <div v-if="name == 'weapon'" v-scope="Item({ url: 'https://media.maplestorywiki.net/yetidb/Eqp_Genesis_Staff.png' })"></div>
+        <div v-if="name != '' && name != 'weapon'" v-scope="Item({ name: name })"></div>
     </template>
 
     <template id="item-template">
-        <p class="text-nowrap">{{ name }}</p>
-        <img :src="url" class="img-thumbnail" alt="item" />
+        <img :src="url" class="img-thumbnail" alt="item" v-on:click="toggle"/>
+        <p v-if="edit">edit</p>
     </template>
 </body>
 
