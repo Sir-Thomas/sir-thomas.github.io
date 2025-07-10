@@ -31,39 +31,32 @@
 
     <script type="module">
         import { createApp } from 'https://unpkg.com/petite-vue?module';
-        import { jobs } from './data.js';
+        import { jobs, emptyCharacter } from './data.js';
 
         function Row(row_number) {
             return {
                 $template: "#row-template",
                 row: row_number,
                 rows: [
-                    ['ring', '', 'hat', '', 'emblem'],
-                    ['ring', 'pendant', 'face', '', 'badge'],
-                    ['ring', 'pendant', 'eye acc', 'ear acc', 'medal'],
-                    ['ring', 'weapon', 'top', 'shoulder', 'sub weapon'],
+                    ['ring1', '', 'hat', '', 'emblem'],
+                    ['ring2', 'pendant1', 'face', '', 'badge'],
+                    ['ring3', 'pendant2', 'eye', 'ear', 'medal'],
+                    ['ring4', 'weapon', 'top', 'shoulder', 'secondary'],
                     ['pocket', 'belt', 'bottom', 'gloves', 'cape'],
                     ['', '', 'shoes', 'android', 'heart']
                 ],
             }
         }
 
-        function Col(name) {
+        function Col(itemSlot) {
             return {
                 $template: "#col-template",
-                name: name,
+                itemSlot: itemSlot,
             }
         }
 
-        function Item(props) {
-            let url;
-            if (props.url) {
-                url = props.url;
-            } else if (props.name) {
-                url = `https://placehold.co/50?text=${props.name}`;
-            } else {
-                url = "https://placehold.co/50";
-            }
+        function Item(position) {
+            let url = `https://placehold.co/50?text=${emptyCharacter[position].name}`;
             return {
                 $template: "#item-template",
                 name: "",
@@ -114,10 +107,9 @@
     </template>
 
     <template id="col-template">
-        <div v-if="name != ''" v-scope="Item({ name: name })"></div>
-        <div v-else style="visibility: hidden;">
-            <img src="https://placehold.co/50" class="img-thumbnail" alt="empty slot" />
-        </div>
+        <div v-if="itemSlot != ''" v-scope="Item(itemSlot)"></div>
+        <div v-else style="visibility: hidden;"><img src="https://placehold.co/50" class="img-thumbnail"
+                alt="empty slot"></div>
     </template>
 
     <template id="item-template">
