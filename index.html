@@ -21,6 +21,7 @@
             <div v-scope="Row(4)"></div>
             <div v-scope="Row(5)"></div>
         </div>
+        <div v-scope="ItemEditor()"></div>
     </div>
 
 
@@ -30,7 +31,7 @@
 
     <script type="module">
         import { createApp } from 'https://unpkg.com/petite-vue?module';
-        import { classOptions } from './data.js';
+        import { jobs } from './data.js';
 
         function Row(row_number) {
             return {
@@ -65,27 +66,41 @@
             }
             return {
                 $template: "#item-template",
-                url: url,
-                edit: false,
-                toggle() {
-                    this.edit = !this.edit;
-                },
+                name: "",
+                image: url,
+                level: 0,
+                stars: 0,
+                potential: 0,
+                flameScore: 0,
             }
         }
 
         function Character() {
             return {
                 $template: "#character-template",
-                selectedClass: "",
-                classOptions,
+                job: "",
+                archetype: "",
+                faction: "",
+                jobs,
                 select(selection) {
-                    console.log(selection)
-                    this.selectedClass = selection;
+                    this.job = selection;
+                    this.archetype = jobs[selection].archetype;
+                    this.faction = jobs[selection].faction;
                 }
             }
         }
 
-        createApp({ Row, Col, Item, Character, popup: false }).mount();
+        function ItemEditor(item) {
+            return {
+                $template: "#item-editor-template",
+                item: item || Item({}),
+                close() {
+                    this.editorEnabled = false;
+                },
+            }
+        }
+
+        createApp({ Row, Col, Item, Character, ItemEditor, editorEnabled: false }).mount();
     </script>
 
     <template id="row-template">
@@ -105,8 +120,7 @@
     </template>
 
     <template id="item-template">
-        <img :src="url" class="img-thumbnail" alt="item" v-on:click="toggle" />
-        <p v-if="edit">edit</p>
+        <img :src="image" class="img-thumbnail" alt="item" v-on:click="{ editorEnabled = true; ItemEditor($data); }" />
     </template>
 
     <template id="character-template">
@@ -114,8 +128,16 @@
             <label class="input-group-text" for="classSelect">Class</label>
             <select class="form-select" id="classSelect" @change="select($event.target.value)">
                 <option selected>Select Class...</option>
-                <option v-for="option in classOptions" :value="option">{{ option }}</option>
+                <option v-for="(data, job) in jobs" :value="job">{{ job }}</option>
             </select>
+        </div>
+    </template>
+
+    <template id="item-editor-template">
+        <div v-if="editorEnabled">
+            <p>edit</p>
+            <p>Stars: {{ item.stars }}</p>
+            <button type="button" class="btn btn-primary" @click="close">Close</button>
         </div>
     </template>
 </body>
