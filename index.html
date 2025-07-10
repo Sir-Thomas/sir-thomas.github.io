@@ -33,10 +33,10 @@
         import { createApp } from 'https://unpkg.com/petite-vue?module';
         import { jobs, emptyCharacter } from './data.js';
 
-        function Row(row_number) {
+        function Row(rowNumber) {
             return {
                 $template: "#row-template",
-                row: row_number,
+                row: rowNumber,
                 rows: [
                     ['ring1', '', 'hat', '', 'emblem'],
                     ['ring2', 'pendant1', 'face', '', 'badge'],
@@ -56,29 +56,51 @@
         }
 
         function Item(position) {
+            let name = "";
             let url = `https://placehold.co/50?text=${emptyCharacter[position].name}`;
+            let level = 0;
+            let stars = 0;
+            let potential = 0;
+            let flameScore = 0;
+            let item = localStorage.getItem(position);
+            if (item) {
+                let url = item.url;
+                let name = item.name;
+                let level = item.level;
+                let stars = item.stars;
+                let potential = item.potential;
+                let flameScore = item.flameScore;
+            }
             return {
                 $template: "#item-template",
-                name: "",
+                name: name,
                 image: url,
-                level: 0,
-                stars: 0,
-                potential: 0,
-                flameScore: 0,
+                level: level,
+                stars: stars,
+                potential: potential,
+                flameScore: flameScore,
             }
         }
 
         function Character() {
+            let job = localStorage.getItem('job') || "none";
+            let archetype = localStorage.getItem('archetype') || "";
+            let faction = localStorage.getItem('faction') || "";
+            let level = localStorage.getItem('level') || 0;
+            console.log(job);
             return {
                 $template: "#character-template",
-                job: "",
-                archetype: "",
-                faction: "",
+                job: job,
+                archetype: archetype,
+                faction: faction,
                 jobs,
                 select(selection) {
                     this.job = selection;
                     this.archetype = jobs[selection].archetype;
                     this.faction = jobs[selection].faction;
+                    localStorage.setItem('job', selection);
+                    localStorage.setItem('archetype', jobs[selection].archetype);
+                    localStorage.setItem('faction', jobs[selection].faction);
                 }
             }
         }
@@ -119,9 +141,9 @@
     <template id="character-template">
         <div class="input-group mb-3 text-start" style="max-width: 300px;">
             <label class="input-group-text" for="classSelect">Class</label>
-            <select class="form-select" id="classSelect" @change="select($event.target.value)">
+            <select class="form-select" id="classSelect" @change="select($event.target.value)" v-model="job">
                 <option selected>Select Class...</option>
-                <option v-for="(data, job) in jobs" :value="job">{{ job }}</option>
+                <option v-for="(data, option) in jobs" :value="option">{{ option }}</option>
             </select>
         </div>
     </template>
