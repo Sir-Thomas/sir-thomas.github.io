@@ -30,6 +30,7 @@
 
     <script type="module">
         import { createApp } from 'https://unpkg.com/petite-vue?module';
+        import { classOptions } from './data.js';
 
         function Row(row_number) {
             return {
@@ -76,11 +77,7 @@
             return {
                 $template: "#character-template",
                 selectedClass: "",
-                classOptions: [
-                    "Battle Mage",
-                    "Blaster",
-                    "Bucc",
-                ],
+                classOptions,
                 select(selection) {
                     console.log(selection)
                     this.selectedClass = selection;
