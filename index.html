@@ -56,7 +56,7 @@
         }
 
         function Item(position) {
-            let name = "";
+            let name = position;
             let url = `https://placehold.co/50?text=${emptyCharacter[position].name}`;
             let level = 0;
             let stars = 0;
@@ -87,7 +87,6 @@
             let archetype = localStorage.getItem('archetype') || "";
             let faction = localStorage.getItem('faction') || "";
             let level = localStorage.getItem('level') || 0;
-            console.log(job);
             return {
                 $template: "#character-template",
                 job: job,
@@ -105,17 +104,16 @@
             }
         }
 
-        function ItemEditor(item) {
+        function ItemEditor() {
             return {
                 $template: "#item-editor-template",
-                item: item || Item({}),
                 close() {
                     this.editorEnabled = false;
                 },
             }
         }
 
-        createApp({ Row, Col, Item, Character, ItemEditor, editorEnabled: false }).mount();
+        createApp({ Row, Col, Item, Character, ItemEditor, selectedItem: {}, editorEnabled: false }).mount();
     </script>
 
     <template id="row-template">
@@ -135,7 +133,8 @@
     </template>
 
     <template id="item-template">
-        <img :src="image" class="img-thumbnail" alt="item" v-on:click="{ editorEnabled = true; ItemEditor($data); }" />
+        <img :src="image" class="img-thumbnail" alt="item"
+            v-on:click="{ selectedItem = $data; editorEnabled = true; }" />
     </template>
 
     <template id="character-template">
@@ -150,8 +149,11 @@
 
     <template id="item-editor-template">
         <div v-if="editorEnabled">
-            <p>edit</p>
-            <p>Stars: {{ item.stars }}</p>
+            <p>Item: {{ selectedItem.name }}</p>
+            <p>Stars: {{ selectedItem.stars }}</p>
+            <p>Level: {{ selectedItem.level }}</p>
+            <p>Potential: {{ selectedItem.potential }}</p>
+            <p>Flame Score: {{ selectedItem.flameScore }}</p>
             <button type="button" class="btn btn-primary" @click="close">Close</button>
         </div>
     </template>
