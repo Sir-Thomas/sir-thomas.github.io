@@ -30,9 +30,45 @@
         crossorigin="anonymous"></script>
 
     <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+        // Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+        import { getFirestore, collection, query, doc, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyADm6vKtF-iTHIS5BgQats54tOOMcIIzs8",
+            authDomain: "maple-inspector.firebaseapp.com",
+            projectId: "maple-inspector",
+            storageBucket: "maple-inspector.firebasestorage.app",
+            messagingSenderId: "1087009448199",
+            appId: "1:1087009448199:web:b109e6363f55cbf85fa5a2",
+            measurementId: "G-C4L5YRW7GX"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
         import { createApp } from 'https://unpkg.com/petite-vue?module';
         import { jobs, emptyCharacter } from './data.js';
-        import { staff } from './data/staff.js';
+
+        const db = getFirestore();
+        let all_items = await getDocs(query(collection(db, "items")));
+        all_items = all_items.docs.map((i) => {
+            let item = i.data();
+            item.name = i.id;
+            return item;
+        });
+        all_items = all_items.reduce((acc, item) => {
+            acc[item.name] = item;
+            return acc;
+        }, {});
 
         function Row(rowNumber) {
             return {
@@ -112,7 +148,7 @@
         function ItemEditor() {
             return {
                 $template: "#item-editor-template",
-                staff,
+                all_items: all_items,
                 save(item) {
                     console.log("Saving item in slot:", item.position);
                     console.log("Item name:", item.name);
@@ -162,18 +198,15 @@
         <div v-if="editorEnabled">
             <div class="input-group mb-3" style="max-width: 300px;">
                 <span class="input-group-text" id="item-name">Item</span>
-                <!-- <input type="text" class="form-control" v-model="selectedItem.name" aria-label="Item Name"
-                    aria-describedby="item-name"
-                    @change="{selectedItem.name = $event.target.value; save(selectedItem);}"> -->
                 <select class="form-select" id="itemSelect" v-model="selectedItem.name" aria-label="Item Name"
                     aria-describedby="item-name" @change="{
                         selectedItem.name = $event.target.value;
-                        selectedItem.level = staff[$event.target.value]['requirements']['level'];
-                        selectedItem.image = staff[$event.target.value]['image'];
+                        selectedItem.level = all_items[$event.target.value]['requirements']['level'];
+                        selectedItem.image = all_items[$event.target.value]['image'];
                         save(selectedItem);
                     }">
                     <option selected>Select Item...</option>
-                    <option v-for="(data, option) in staff" :value="option">{{ option }}
+                    <option v-for="(data, option) in all_items" :value="option">{{ option }}
                     </option>
                 </select>
             </div>
