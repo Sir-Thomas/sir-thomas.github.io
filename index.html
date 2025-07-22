@@ -13,7 +13,7 @@
     <div class="m-4">
         <h3>Maple Inspector</h3>
         <div v-scope="Character()"></div>
-        <div class="container-xs text-center">
+        <div class="container-xs text-center p-3">
             <div v-scope="Row(0)"></div>
             <div v-scope="Row(1)"></div>
             <div v-scope="Row(2)"></div>
@@ -32,6 +32,7 @@
     <script type="module">
         import { createApp } from 'https://unpkg.com/petite-vue?module';
         import { jobs, emptyCharacter } from './data.js';
+        import { staff } from './data/staff.js';
 
         function Row(rowNumber) {
             return {
@@ -64,15 +65,17 @@
             let flameScore = 0;
             let item = localStorage.getItem(position);
             if (item) {
-                let url = item.url;
-                let name = item.name;
-                let level = item.level;
-                let stars = item.stars;
-                let potential = item.potential;
-                let flameScore = item.flameScore;
+                let itemJSON = JSON.parse(item);
+                name = itemJSON.name;
+                url = itemJSON.image;
+                level = itemJSON.level;
+                stars = itemJSON.stars;
+                potential = itemJSON.potential;
+                flameScore = itemJSON.flameScore;
             }
             return {
                 $template: "#item-template",
+                position: position,
                 name: name,
                 image: url,
                 level: level,
@@ -97,9 +100,11 @@
                     this.job = selection;
                     this.archetype = jobs[selection].archetype;
                     this.faction = jobs[selection].faction;
+                    this.weapons = jobs[selection].weapons;
                     localStorage.setItem('job', selection);
-                    localStorage.setItem('archetype', jobs[selection].archetype);
+                    localStorage.setItem('archetype', JSON.stringify(jobs[selection].archetype));
                     localStorage.setItem('faction', jobs[selection].faction);
+                    localStorage.setItem('weapons', JSON.stringify(jobs[selection].weapons));
                 }
             }
         }
@@ -107,6 +112,12 @@
         function ItemEditor() {
             return {
                 $template: "#item-editor-template",
+                staff,
+                save(item) {
+                    console.log("Saving item in slot:", item.position);
+                    console.log("Item name:", item.name);
+                    localStorage.setItem(item.position, JSON.stringify(item));
+                },
                 close() {
                     this.editorEnabled = false;
                 },
@@ -133,8 +144,8 @@
     </template>
 
     <template id="item-template">
-        <img :src="image" class="img-thumbnail" alt="item"
-            v-on:click="{ selectedItem = $data; editorEnabled = true; }" />
+        <img :src="image" class="img-thumbnail" alt="item" v-on:click="{ selectedItem = $data; editorEnabled = true; }"
+            height="60" width="60" />
     </template>
 
     <template id="character-template">
@@ -149,11 +160,46 @@
 
     <template id="item-editor-template">
         <div v-if="editorEnabled">
-            <p>Item: {{ selectedItem.name }}</p>
-            <p>Stars: {{ selectedItem.stars }}</p>
-            <p>Level: {{ selectedItem.level }}</p>
-            <p>Potential: {{ selectedItem.potential }}</p>
-            <p>Flame Score: {{ selectedItem.flameScore }}</p>
+            <div class="input-group mb-3" style="max-width: 300px;">
+                <span class="input-group-text" id="item-name">Item</span>
+                <!-- <input type="text" class="form-control" v-model="selectedItem.name" aria-label="Item Name"
+                    aria-describedby="item-name"
+                    @change="{selectedItem.name = $event.target.value; save(selectedItem);}"> -->
+                <select class="form-select" id="itemSelect" v-model="selectedItem.name" aria-label="Item Name"
+                    aria-describedby="item-name" @change="{
+                        selectedItem.name = $event.target.value;
+                        selectedItem.level = staff[$event.target.value]['requirements']['level'];
+                        selectedItem.image = staff[$event.target.value]['image'];
+                        save(selectedItem);
+                    }">
+                    <option selected>Select Item...</option>
+                    <option v-for="(data, option) in staff" :value="option">{{ option }}
+                    </option>
+                </select>
+            </div>
+            <div class="input-group mb-3" style="max-width: 300px;">
+                <span class="input-group-text" id="item-level">Level</span>
+                <div class="form-control" aria-label="Level" aria-describedby="item-level">{{
+                    selectedItem.level }}</div>
+            </div>
+            <div class="input-group mb-3" style="max-width: 300px;">
+                <span class="input-group-text" id="item-stars">Stars</span>
+                <input type="number" class="form-control" v-model="selectedItem.stars" aria-label="Stars"
+                    aria-describedby="item-stars"
+                    @change="{selectedItem.stars = $event.target.value; save(selectedItem);}">
+            </div>
+            <div class="input-group mb-3" style="max-width: 300px;">
+                <span class="input-group-text" id="item-potential">Potential</span>
+                <input type="number" class="form-control" v-model="selectedItem.potential" aria-label="Potential"
+                    aria-describedby="item-potential"
+                    @change="{selectedItem.potential = $event.target.value; save(selectedItem);}">
+            </div>
+            <div class="input-group mb-3" style="max-width: 300px;">
+                <span class="input-group-text" id="item-flame-score">Flame Score</span>
+                <input type="number" class="form-control" v-model="selectedItem.flameScore" aria-label="Flame Score"
+                    aria-describedby="item-flame-score"
+                    @change="{selectedItem.flameScore = $event.target.value; save(selectedItem);}">
+            </div>
             <button type="button" class="btn btn-primary" @click="close">Close</button>
         </div>
     </template>
