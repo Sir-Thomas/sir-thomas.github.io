@@ -1,0 +1,3 @@
+requests_html
+lxml_html_clean
+firebase_admin
