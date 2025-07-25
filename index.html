@@ -59,16 +59,23 @@
         import { jobs, emptyCharacter } from './data.js';
 
         const db = getFirestore();
-        let all_items = await getDocs(query(collection(db, "items")));
-        all_items = all_items.docs.map((i) => {
+
+        let allItems = await getDocs(query(collection(db, "items")));
+        allItems = allItems.docs.map((i) => {
             let item = i.data();
             item.name = i.id;
             return item;
         });
-        all_items = all_items.reduce((acc, item) => {
+        allItems = allItems.reduce((acc, item) => {
             acc[item.name] = item;
             return acc;
         }, {});
+
+        console.log(allItems);
+
+        function GetItems(itemType, job, archetypes) {
+            return allItems;
+        }
 
         function Row(rowNumber) {
             return {
@@ -123,22 +130,22 @@
 
         function Character() {
             let job = localStorage.getItem('job') || "none";
-            let archetype = localStorage.getItem('archetype') || "";
+            let archetypes = localStorage.getItem('archetypes') || "";
             let faction = localStorage.getItem('faction') || "";
             let level = localStorage.getItem('level') || 0;
             return {
                 $template: "#character-template",
                 job: job,
-                archetype: archetype,
+                archetypes: archetypes,
                 faction: faction,
                 jobs,
                 select(selection) {
                     this.job = selection;
-                    this.archetype = jobs[selection].archetype;
+                    this.archetypes = jobs[selection].archetypes;
                     this.faction = jobs[selection].faction;
                     this.weapons = jobs[selection].weapons;
                     localStorage.setItem('job', selection);
-                    localStorage.setItem('archetype', JSON.stringify(jobs[selection].archetype));
+                    localStorage.setItem('archetypes', JSON.stringify(jobs[selection].archetypes));
                     localStorage.setItem('faction', jobs[selection].faction);
                     localStorage.setItem('weapons', JSON.stringify(jobs[selection].weapons));
                 }
@@ -148,7 +155,7 @@
         function ItemEditor() {
             return {
                 $template: "#item-editor-template",
-                all_items: all_items,
+                items: GetItems(this.selectedItem.position || null, Character().job, Character().archetypes),
                 save(item) {
                     console.log("Saving item in slot:", item.position);
                     console.log("Item name:", item.name);
@@ -160,7 +167,7 @@
             }
         }
 
-        createApp({ Row, Col, Item, Character, ItemEditor, selectedItem: {}, editorEnabled: false }).mount();
+        createApp({ Row, Col, Item, Character, ItemEditor, GetItems, selectedItem: {}, editorEnabled: false, }).mount();
     </script>
 
     <template id="row-template">
@@ -201,12 +208,13 @@
                 <select class="form-select" id="itemSelect" v-model="selectedItem.name" aria-label="Item Name"
                     aria-describedby="item-name" @change="{
                         selectedItem.name = $event.target.value;
-                        selectedItem.level = all_items[$event.target.value]['requirements']['level'];
-                        selectedItem.image = all_items[$event.target.value]['image'];
+                        selectedItem.level = items[$event.target.value]['requirements']['level'];
+                        selectedItem.image = items[$event.target.value]['image'];
                         save(selectedItem);
                     }">
                     <option selected>Select Item...</option>
-                    <option v-for="(data, option) in all_items" :value="option">{{ option }}
+                    <option v-for="(data, option) in items" :value="option">
+                        {{ option }}
                     </option>
                 </select>
             </div>
