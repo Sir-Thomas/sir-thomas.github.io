@@ -1,0 +1,484 @@
+{
+    "Adele": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "flora",
+        "weapons": [
+            "Bladecaster"
+        ]
+    },
+    "Angelic Buster": {
+        "archetypes": [
+            "pirate"
+        ],
+        "faction": "nova",
+        "weapons": [
+            "Soul Shooter"
+        ]
+    },
+    "Aran": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "hero",
+        "weapons": [
+            "Polearm"
+        ]
+    },
+    "Arch Mage (Fire, Poison)": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Staff",
+            "Wand"
+        ]
+    },
+    "Arch Mage (Ice, Lightning)": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Staff",
+            "Wand"
+        ]
+    },
+    "Ark": {
+        "archetypes": [
+            "pirate"
+        ],
+        "faction": "flora",
+        "weapons": [
+            "Knuckle"
+        ]
+    },
+    "Battle Mage": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "resistance",
+        "weapons": [
+            "Staff"
+        ]
+    },
+    "Bishop": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Staff",
+            "Wand"
+        ]
+    },
+    "Blaster": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "resistance",
+        "weapons": [
+            "Arm Cannon"
+        ]
+    },
+    "Blaze Wizard": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "cygnus knight",
+        "weapons": [
+            "Staff",
+            "Wand"
+        ]
+    },
+    "Bowmaster": {
+        "archetypes": [
+            "archer"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Bow"
+        ]
+    },
+    "Buccaneer": {
+        "archetypes": [
+            "pirate"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Knuckle"
+        ]
+    },
+    "Cadena": {
+        "archetypes": [
+            "thief"
+        ],
+        "faction": "nova",
+        "weapons": [
+            "Chain"
+        ]
+    },
+    "Cannoneer": {
+        "archetypes": [
+            "pirate"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Hand Cannon"
+        ]
+    },
+    "Corsair": {
+        "archetypes": [
+            "pirate"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Gun"
+        ]
+    },
+    "Dark Knight": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Spear",
+            "Polearm"
+        ]
+    },
+    "Dawn Warrior": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "cygnus knight",
+        "weapons": [
+            "One-Handed Sword",
+            "Two-Handed Sword"
+        ]
+    },
+    "Demon Avenger": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "resistance",
+        "weapons": [
+            "Desperado"
+        ]
+    },
+    "Demon Slayer": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "resistance",
+        "weapons": [
+            "One-Handed Blunt Weapon",
+            "One-Handed Axe"
+        ]
+    },
+    "Dual Blade": {
+        "archetypes": [
+            "thief"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Dagger"
+        ]
+    },
+    "Evan": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "hero",
+        "weapons": [
+            "Staff",
+            "Wand"
+        ]
+    },
+    "Hayato": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "sengoku",
+        "weapons": [
+            "Katana"
+        ]
+    },
+    "Hero": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Two-Handed Sword",
+            "One-Handed Sword",
+            "Two-Handed Axe",
+            "One-Handed Axe"
+        ]
+    },
+    "Hoyoung": {
+        "archetypes": [
+            "thief"
+        ],
+        "faction": "anima",
+        "weapons": [
+            "Ritual Fan"
+        ]
+    },
+    "Illium": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "flora",
+        "weapons": [
+            "Lucent Gauntlet"
+        ]
+    },
+    "Kain": {
+        "archetypes": [
+            "archer"
+        ],
+        "faction": "nova",
+        "weapons": [
+            "Whispershot"
+        ]
+    },
+    "Kaiser": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "nova",
+        "weapons": [
+            "Two-Handed Sword"
+        ]
+    },
+    "Kanna": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "sengoku",
+        "weapons": [
+            "Fan"
+        ]
+    },
+    "Khali": {
+        "archetypes": [
+            "thief"
+        ],
+        "faction": "flora",
+        "weapons": [
+            "Chakram"
+        ]
+    },
+    "Kinesis": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "friendstory",
+        "weapons": [
+            "Psy-limiter"
+        ]
+    },
+    "Lara": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "anima",
+        "weapons": [
+            "Wand"
+        ]
+    },
+    "Len": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "shine",
+        "weapons": []
+    },
+    "Luminous": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "hero",
+        "weapons": [
+            "Shining Rod"
+        ]
+    },
+    "Lynn": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "jianghu",
+        "weapons": [
+            "Memorial Staff"
+        ]
+    },
+    "Marksman": {
+        "archetypes": [
+            "archer"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Crossbow"
+        ]
+    },
+    "Mechanic": {
+        "archetypes": [
+            "pirate"
+        ],
+        "faction": "resistance",
+        "weapons": [
+            "Gun"
+        ]
+    },
+    "Mercedes": {
+        "archetypes": [
+            "archer"
+        ],
+        "faction": "hero",
+        "weapons": [
+            "Dual Bowguns"
+        ]
+    },
+    "Mihile": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "cygnus knight",
+        "weapons": [
+            "One-Handed Sword"
+        ]
+    },
+    "Mo Xuan": {
+        "archetypes": [
+            "thief"
+        ],
+        "faction": "jianghu",
+        "weapons": [
+            "Martial Brace"
+        ]
+    },
+    "Night Lord": {
+        "archetypes": [
+            "thief"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Claw"
+        ]
+    },
+    "Night Walker": {
+        "archetypes": [
+            "thief"
+        ],
+        "faction": "cygnus knight",
+        "weapons": [
+            "Claw"
+        ]
+    },
+    "Paladin": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "One-Handed Sword",
+            "Two-Handed Sword",
+            "One-Handed Blunt Weapon",
+            "Two-Handed Blunt Weapon"
+        ]
+    },
+    "Pathfinder": {
+        "archetypes": [
+            "archer"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Ancient Bow"
+        ]
+    },
+    "Phantom": {
+        "archetypes": [
+            "thief"
+        ],
+        "faction": "hero",
+        "weapons": [
+            "Cane"
+        ]
+    },
+    "Shade": {
+        "archetypes": [
+            "thief"
+        ],
+        "faction": "hero",
+        "weapons": [
+            "Knuckle"
+        ]
+    },
+    "Shadower": {
+        "archetypes": [
+            "thief"
+        ],
+        "faction": "explorer",
+        "weapons": [
+            "Dagger"
+        ]
+    },
+    "Sia Astelle": {
+        "archetypes": [
+            "mage"
+        ],
+        "faction": "shine",
+        "weapons": [
+            "Celestial Light"
+        ]
+    },
+    "Thunder Breaker": {
+        "archetypes": [
+            "pirate"
+        ],
+        "faction": "cygnus knight",
+        "weapons": [
+            "Knuckle"
+        ]
+    },
+    "Wild Hunter": {
+        "archetypes": [
+            "archer"
+        ],
+        "faction": "resistance",
+        "weapons": [
+            "Crossbow"
+        ]
+    },
+    "Wind Archer": {
+        "archetypes": [
+            "archer"
+        ],
+        "faction": "cygnus knight",
+        "weapons": [
+            "Bow"
+        ]
+    },
+    "Xenon": {
+        "archetypes": [
+            "pirate",
+            "thief"
+        ],
+        "faction": "resistance",
+        "weapons": [
+            "Whip Blade"
+        ]
+    },
+    "Zero": {
+        "archetypes": [
+            "warrior"
+        ],
+        "faction": "child of god",
+        "weapons": [
+            "Long Sword",
+            "Heavy Sword"
+        ]
+    }
+}
