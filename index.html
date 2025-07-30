@@ -39,7 +39,7 @@
         // https://firebase.google.com/docs/web/setup#available-libraries
 
         // import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-        import { getFirestore, collection, query, doc, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+        import { getFirestore, collection, query, doc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
         import { GoogleAuthProvider, signInWithPopup, getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
         // Your web app's Firebase configuration
@@ -99,31 +99,30 @@
         }
 
         function Item(position) {
-            let name = position;
-            let url = `https://placehold.co/50?text=${emptyCharacter[position].name}`;
-            let level = 0;
-            let stars = 0;
-            let potential = 0;
-            let flameScore = 0;
-            let item = localStorage.getItem(position);
-            if (item) {
-                let itemJSON = JSON.parse(item);
-                name = itemJSON.name;
-                url = itemJSON.image;
-                level = itemJSON.level;
-                stars = itemJSON.stars;
-                potential = itemJSON.potential;
-                flameScore = itemJSON.flameScore;
-            }
             return {
                 $template: "#item-template",
-                position: position,
-                name: name,
-                image: url,
-                level: level,
-                stars: stars,
-                potential: potential,
-                flameScore: flameScore,
+                position,
+                name: position,
+                image: `https://placehold.co/50?text=${emptyCharacter[position].name}`,
+                level: 0,
+                stars: 0,
+                potential: 0,
+                flameScore: 0,
+                async mounted() {
+                    console.log("Mounted item:", position);
+                    if (this.user) {
+                        item = await getDocs(query(collection(db, "users", this.user.uid, "character1", position)));
+                        if (item.exists()) {
+                            this.name = item.name;
+                            this.image = item.image;
+                            this.level = item.level;
+                            this.stars = item.stars;
+                            this.potential = item.potential;
+                            this.flameScore = item.flameScore;
+                            console.log("Item loaded:", this.name);
+                        }
+                    }
+                }
             }
         }
 
@@ -156,9 +155,16 @@
                 $template: "#item-editor-template",
                 items: allItems,
                 save(item) {
-                    console.log("Saving item in slot:", item.position);
-                    console.log("Item name:", item.name);
-                    localStorage.setItem(item.position, JSON.stringify(item));
+                    setDoc(doc(db, "users", this.user.uid, "character1", item.position), {
+                        name: item.name,
+                        image: item.image,
+                        level: item.level,
+                        stars: item.stars,
+                        potential: item.potential,
+                        flameScore: item.flameScore
+                    }).catch((error) => {
+                        console.error("Error saving item to Firestore:", error);
+                    });
                 },
                 close() {
                     this.editorEnabled = false;
@@ -225,13 +231,16 @@
 
     <template id="col-template">
         <div v-if="itemSlot != ''" v-scope="Item(itemSlot)"></div>
-        <div v-else style="visibility: hidden;"><img src="https://placehold.co/50" class="img-thumbnail"
-                alt="empty slot"></div>
+        <div v-else style="visibility: hidden;">
+            <img src="https://placehold.co/50" class="img-thumbnail" alt="empty slot">
+        </div>
     </template>
 
     <template id="item-template">
-        <img :src="image" class="img-thumbnail" alt="item" v-on:click="{ selectedItem = $data; editorEnabled = true; }"
-            height="60" width="60" />
+        <div @vue:mounted="mounted">
+            <img :src="image" class="img-thumbnail" alt="item"
+                v-on:click="{ selectedItem = $data; editorEnabled = true; }" height="60" width="60" />
+        </div>
     </template>
 
     <template id="character-template">
