@@ -11,6 +11,8 @@
 
 <body>
     <div class="m-4">
+        <div v-scope="SignIn()">
+        </div>
         <h3>Maple Inspector</h3>
         <div v-scope="Character()"></div>
         <div class="container-xs text-center p-3">
@@ -38,6 +40,7 @@
 
         // import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
         import { getFirestore, collection, query, doc, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+        import { GoogleAuthProvider, signInWithPopup, getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
         // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -72,10 +75,6 @@
         }, {});
 
         console.log(allItems);
-
-        function GetItems(itemType, job, archetypes) {
-            return allItems;
-        }
 
         function Row(rowNumber) {
             return {
@@ -155,7 +154,7 @@
         function ItemEditor() {
             return {
                 $template: "#item-editor-template",
-                items: GetItems(this.selectedItem.position || null, Character().job, Character().archetypes),
+                items: allItems,
                 save(item) {
                     console.log("Saving item in slot:", item.position);
                     console.log("Item name:", item.name);
@@ -167,8 +166,52 @@
             }
         }
 
-        createApp({ Row, Col, Item, Character, ItemEditor, GetItems, selectedItem: {}, editorEnabled: false, }).mount();
+        function SignIn() {
+            const provider = new GoogleAuthProvider();
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    this.user = user;
+                } else {
+                    this.user = null;
+                }
+            });
+            return {
+                $template: "#sign-in-template",
+                signIn() {
+                    signInWithPopup(auth, provider)
+                        .then((result) => {
+                            this.credential = GoogleAuthProvider.credentialFromResult(result);
+                            this.token = this.credential.accessToken;
+                            this.user = result.user;
+                        }).catch((error) => {
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            const credential = GoogleAuthProvider.credentialFromError(error);
+                            console.log("Sign in error: ", error);
+                        });
+                },
+                signOut() {
+                    signOut(auth).then(() => {
+                        this.user = null;
+                        console.log("User signed out");
+                    }).catch((error) => {
+                        console.error("Sign out error:", error);
+                    });
+                }
+            }
+        }
+
+        createApp({ Row, Col, Item, Character, ItemEditor, SignIn, selectedItem: {}, editorEnabled: false, credential: null, token: null, user: null, }).mount();
     </script>
+
+    <template id="sign-in-template">
+        <div v-if="user">
+            <p>{{ user.displayName }}</p>
+            <button @click="signOut()">SignOut</button>
+        </div>
+        <button v-else class="button" @click="signIn()">Sign In</button>
+    </template>
 
     <template id="row-template">
         <div class="row row-cols-auto">
