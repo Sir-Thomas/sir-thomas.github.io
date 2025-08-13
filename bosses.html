@@ -17,7 +17,26 @@
 
 <body>
     <div class="container">
-        <h1>Maplestory Boss HP</h1>
+        <nav class="navbar navbar-expand-lg">
+            <a href="index.html" class="navbar-brand">SirThomas's Tools</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a href="bosses.html" class="nav-link active" aria-current="page">Boss HP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="tracker.html" class="nav-link disabled">Gear Tracker</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="hexa-tracker.html" class="nav-link disabled">Hexa Tracker</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
         <div class="table-responsive text-nowrap" x-data="{ partySize: 1 }">
             <table class="table table-striped table-bordered">
@@ -140,6 +159,10 @@
             };
         }
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
