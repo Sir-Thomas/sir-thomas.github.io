@@ -8,6 +8,11 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <style>
+        .section-divider {
+            border-top: 2.5px solid #ffffff !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -30,13 +35,18 @@
                 </thead>
                 <tbody class="table-group-divider" x-data="getBosses()">
                     <template x-for="boss in bosses">
-                        <tr>
+                        <tr x-bind:class="boss.divider ? 'section-divider' : ''">
                             <td x-text="boss.name"></td>
                             <td x-text="boss.level"></td>
                             <td x-text="formatNumber(boss.hp)"></td>
                             <td x-text="formatNumber(boss.hp * 0.05)"></td>
-                            <td x-text="boss.pdr"></td>
-                            <td x-text="boss.type == 'Arcane' ? boss.af : (boss.type == 'Sacred' ? boss.sf : '-')"></td>
+                            <td x-text="boss.pdr + '%'"></td>
+                            <td>
+                                <span
+                                    x-text="boss.type == 'Arcane' ? boss.af : (boss.type == 'Sacred' ? boss.sf : '-')"></span>
+                                <span
+                                    x-text="boss.type == 'Arcane' ? ' AF' : (boss.type == 'Sacred' ? ' SF' : '')"></span>
+                            </td>
                             <td x-text="getMaxArcaneSacred(boss)"></td>
                             <td x-text="boss.mesos ? formatNumber(boss.mesos) : '-'"></td>
                         </tr>
@@ -65,11 +75,11 @@
 
         function getMaxArcaneSacred(boss) {
             if (boss.name.includes('Black Mage')) {
-                return '1452';
+                return '1452 AF';
             } else if (boss.type == 'Arcane') {
-                return boss.af * 1.5;
+                return (boss.af * 1.5) + ' AF';
             } else if (boss.type == 'Sacred') {
-                return boss.sf + 50;
+                return (boss.sf + 50) + ' SF';
             } else {
                 return '-';
             }
@@ -89,19 +99,19 @@
                     { name: 'Princess No', hp: 200000000000, level: 160, pdr: 100, type: 'none', mesos: 81000000 },
                     { name: 'Hard Magnus', hp: 120000000000, level: 190, pdr: 120, type: 'none', mesos: 95062500 },
                     { name: 'Chaos Vellum', hp: 200000000000, level: 190, pdr: 200, type: 'none', mesos: 105062500 },
-                    { name: 'Chaos Pap', hp: 504000000000, level: 190, pdr: 250, type: 'none', mesos: 132250000 },
+                    { name: 'Chaos Pap', hp: 504000000000, level: 190, pdr: 250, type: 'none', mesos: 132250000, divider: true },
                     { name: 'Akechi', hp: 304000000000, level: 210, pdr: 300, type: 'none', mesos: 144000000 },
                     { name: 'Hellux', hp: 770000000000, level: 190, pdr: 250, type: 'none' },
                     { name: 'Normal Lotus', hp: 1600000000000, level: 210, pdr: 300, type: 'none', mesos: 162562500 },
                     { name: 'Normal Damien', hp: 1200000000000, level: 210, pdr: 300, type: 'none', mesos: 169000000 },
                     { name: 'Normal Slime', hp: 5000000000000, level: 220, pdr: 300, type: 'none', mesos: 231673500 },
-                    { name: 'Easy Lucid', hp: 12000000000000, level: 230, pdr: 300, type: 'Arcane', af: 360, mesos: 237009375 },
+                    { name: 'Easy Lucid', hp: 12000000000000, level: 230, pdr: 300, type: 'Arcane', af: 360, mesos: 237009375, divider: true },
                     { name: 'Easy Will', hp: 17000000000000, level: 235, pdr: 300, type: 'Arcane', af: 560, mesos: 246744750 },
                     { name: 'Normal Lucid', hp: 24000000000000, level: 230, pdr: 300, type: 'Arcane', af: 360, mesos: 253828125 },
                     { name: 'Normal Will', hp: 25000000000000, level: 250, pdr: 300, type: 'Arcane', af: 760, mesos: 279075000 },
                     { name: 'Normal Gloom', hp: 26000000000000, level: 255, pdr: 300, type: 'Arcane', af: 730, mesos: 297675000 },
                     { name: 'Normal Darknell', hp: 26000000000000, level: 265, pdr: 300, type: 'Arcane', af: 850, mesos: 316875000 },
-                    { name: 'Hard Lotus', hp: 34000000000000, level: 210, pdr: 300, type: 'none', mesos: 444675000 },
+                    { name: 'Hard Lotus', hp: 34000000000000, level: 210, pdr: 300, type: 'none', mesos: 444675000, divider: true },
                     { name: 'Hard Damien', hp: 36000000000000, level: 210, pdr: 300, type: 'none', mesos: 421875000 },
                     { name: 'Hard Lucid', hp: 118000000000000, level: 230, pdr: 300, type: 'Arcane', af: 360, mesos: 504000000 },
                     { name: 'Hard Will', hp: 126000000000000, level: 250, pdr: 300, type: 'Arcane', af: 760, mesos: 621810000 },
@@ -111,19 +121,19 @@
                     { name: 'Hard Darknell', hp: 160000000000000, level: 265, pdr: 300, type: 'Arcane', af: 850, mesos: 667920000 },
                     { name: 'Hard VHilla', hp: 176000000000000, level: 250, pdr: 300, type: 'Arcane', af: 900, mesos: 762105000 },
                     { name: 'Hard Black Mage', hp: 470000000000000, level: 275, pdr: 300, type: 'Arcane', af: 1320, mesos: 4500000000 },
-                    { name: 'Normal Seren', hp: 208000000000000, level: 270, pdr: 380, type: 'Sacred', sf: 200, mesos: 889021875 },
+                    { name: 'Normal Seren', hp: 208000000000000, level: 270, pdr: 380, type: 'Sacred', sf: 200, mesos: 889021875, divider: true },
                     { name: 'Hard Seren', hp: 484000000000000, level: 275, pdr: 380, type: 'Sacred', sf: 200, mesos: 1096562500 },
                     { name: 'Easy Kalos', hp: 357000000000000, level: 270, pdr: 380, type: 'Sacred', sf: 200, mesos: 937500000 },
                     { name: 'Easy Kaling', hp: 921000000000000, level: 275, pdr: 380, type: 'Sacred', sf: 230, mesos: 1031250000 },
                     { name: 'Normal Kalos', hp: 1100000000000000, level: 280, pdr: 380, type: 'Sacred', sf: 300, mesos: 1300000000 },
-                    { name: 'Normal Kaling', hp: 4000000000000000, level: 285, pdr: 380, type: 'Sacred', sf: 330, mesos: 1506500000 },
+                    { name: 'Normal Kaling', hp: 4000000000000000, level: 285, pdr: 380, type: 'Sacred', sf: 330, mesos: 1506500000, divider: true },
                     { name: 'Extreme Black Mage', hp: 4800000000000000, level: 280, pdr: 300, type: 'Arcane', af: 1320, mesos: 18000000000 },
                     { name: 'Chaos Kalos', hp: 5800000000000000, level: 285, pdr: 380, type: 'Sacred', sf: 330, mesos: 2600000000 },
                     { name: 'Extreme Seren', hp: 7300000000000000, level: 280, pdr: 380, type: 'Sacred', sf: 200, mesos: 4235000000 },
                     { name: 'Extreme Lotus', hp: 1800000000000000, level: 285, pdr: 380, type: 'none', mesos: 1397500000 },
                     { name: 'Hard Kaling', hp: 17800000000000000, level: 285, pdr: 380, type: 'Sacred', sf: 330, mesos: 2990000000 },
                     { name: 'Normal Limbo', hp: 6500000000000000, level: 285, pdr: 380, type: 'Sacred', sf: 500, mesos: 2100000000 },
-                    { name: 'Extreme Kalos', hp: 24300000000000000, level: 285, pdr: 380, type: 'Sacred', sf: 330, mesos: 5200000000 },
+                    { name: 'Extreme Kalos', hp: 24300000000000000, level: 285, pdr: 380, type: 'Sacred', sf: 330, mesos: 5200000000, divider: true },
                     { name: 'Extreme Kaling', hp: 98600000000000000, level: 285, pdr: 380, type: 'Sacred', sf: 330, mesos: 6026000000 },
                     { name: 'Hard Limbo', hp: 14000000000000000, level: 285, pdr: 380, type: 'Sacred', sf: 500, mesos: 3745000000 }
                 ]
